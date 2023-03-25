@@ -1,0 +1,205 @@
+@charset "UTF-8";
+/** IMPORTO EL RESET DE ESTILOS PARA HTML Y LA TIPOGRAFÍA **/
+@import url(reset.css);
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap");
+/** COLORES **/
+/** TIPOGRAFÍAS **/
+/** TIPOGRAFÍAS **/
+p {
+  font-family: "Poppins", Arial, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 300;
+}
+
+a.link {
+  font-family: "Poppins", Arial, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #E09132;
+  text-transform: uppercase;
+  opacity: 1;
+  margin-left: 5px;
+  transition: all 0.8s;
+}
+a.link:after {
+  content: url("data:image/svg+xml,%3Csvg style='color: rgb(224, 145, 50); margin-top: 2px;' xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-arrow-right' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z' fill='%23e09132'%3E%3C/path%3E%3C/svg%3E");
+  margin-left: 5px;
+  transition: all 0.35s ease;
+}
+a.link:hover {
+  opacity: 0.5;
+  margin-left: 0;
+}
+a.link:hover::after {
+  margin-left: 10px;
+}
+
+/** ANIMACIÓN ITEMS EN MÓVIL **/
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0%);
+  }
+}
+.header {
+  width: 100%;
+  padding: 1em 5%;
+  position: fixed;
+  top: 0;
+  background: #ffffff;
+  z-index: 99;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #000000;
+}
+.header_img {
+  max-width: 120px;
+  background-color: tomato;
+}
+.header_ul {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+}
+@media screen and (max-width: 480px) {
+  .header_ul {
+    flex-direction: column;
+  }
+}
+.header_li {
+  margin: 0 1rem;
+}
+.header_li a {
+  opacity: 1;
+  transition: all 0.8s ease;
+  position: relative;
+  /** Preparo el subrayado del hover de los enlaces **/
+}
+.header_li a:before, .header_li a.header_button::after {
+  content: " ";
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 100%;
+  bottom: 0;
+  background: #E09132;
+  height: 2px;
+  transition-property: right;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-out;
+}
+.header_li a:hover {
+  opacity: 0.5;
+}
+.header_li a:hover:before, .header_li a.header_button:hover::after {
+  right: 0;
+  text-decoration: none !important;
+}
+@media screen and (max-width: 480px) {
+  .header_li {
+    margin: 1rem 0;
+  }
+}
+.header_rrss {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+.header_rrss_img {
+  width: 20px;
+  height: 20px;
+  margin: 0 0.8em;
+}
+@media screen and (max-width: 480px) {
+  .header_rrss {
+    display: none;
+    width: 100%;
+    justify-content: center;
+    margin: 1rem 0;
+  }
+  .header_rrss.active {
+    display: flex;
+  }
+}
+.header_button {
+  /** Para simular un link **/
+  cursor: pointer;
+  background: #000000;
+  display: none;
+  height: 2px;
+  position: relative;
+  width: 24px;
+  /** Creo las 3 barritas **/
+  /** cuando se añada la clasa active, transformo las tres barritas en una X **/
+}
+@media screen and (max-width: 480px) {
+  .header_button {
+    display: block;
+  }
+}
+.header_button::before, .header_button::after {
+  background: #000000;
+  content: "";
+  display: block;
+  height: 100%;
+  position: absolute;
+  transition: all 0.2s ease-out;
+  width: 100%;
+  top: 5px;
+}
+.header_button::after {
+  top: -5px;
+}
+.header_button.active {
+  background: transparent;
+}
+.header_button.active::before, .header_button.active::after {
+  transform: rotate(-45deg);
+  top: 0;
+}
+.header_button.active::after {
+  transform: rotate(45deg);
+  top: 0;
+}
+@media screen and (max-width: 480px) {
+  .header > a {
+    width: 50%;
+  }
+  .header_nav {
+    width: 100%;
+    opacity: 0;
+    height: 0vh;
+    overflow: hidden;
+    transition: all 0.5s ease;
+  }
+  .header_nav.active {
+    opacity: 1;
+    height: 30vh;
+    /** Activo la animación para que los items vayan apareciendo en escalera **/
+  }
+  .header_nav.active .header_li {
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+  }
+  .header_nav.active .header_li:nth-child(1) {
+    animation-delay: 0ms;
+  }
+  .header_nav.active .header_li:nth-child(2) {
+    animation-delay: 100ms;
+  }
+  .header_nav.active .header_li:nth-child(3) {
+    animation-delay: 200ms;
+  }
+  .header_nav.active .header_li:nth-child(4) {
+    animation-delay: 300ms;
+  }
+}/*# sourceMappingURL=hamb-menu.css.map */

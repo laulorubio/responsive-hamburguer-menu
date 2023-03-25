@@ -1,0 +1,229 @@
+/** IMPORTO EL RESET DE ESTILOS PARA HTML Y LA TIPOGRAFÍA **/
+@import url(reset.css);
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+/** COLORES **/
+$color-verde-fondo: #0A392D;
+$color-negro-text: #000000;
+$color-naranja-text: #E09132;
+
+/** TIPOGRAFÍAS **/
+$tipo-ppal: 'Poppins', Arial, sans-serif;
+
+@mixin flexbox($display , $direction , $wrap , $justify , $align) {
+    display: $display;
+    flex-flow: $direction $wrap;
+    justify-content: $justify;
+    align-items: $align;
+}
+
+@mixin movil() {
+    @media screen and (max-width: 480px) {
+        @content;
+    }
+}
+
+@mixin tipografias($family, $size, $weight) {
+    font-family: $family;
+    font-size: $size;
+    font-weight: $weight;
+}
+
+/** TIPOGRAFÍAS **/
+p{
+    @include tipografias($tipo-ppal, .9rem, 300);
+}
+a.link{
+    @include tipografias($tipo-ppal, .9rem, 500);
+    color: $color-naranja-text;
+    text-transform: uppercase;
+
+    opacity: 1;
+    margin-left: 5px;
+    transition: all 0.8s;
+
+    &:after {
+        content: url("data:image/svg+xml,%3Csvg style='color: rgb(224, 145, 50); margin-top: 2px;' xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-arrow-right' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z' fill='%23e09132'%3E%3C/path%3E%3C/svg%3E");
+        margin-left: 5px;
+        transition: all 0.35s ease;
+    }
+
+    &:hover{
+        opacity: .5;
+        margin-left: 0;
+        &::after {
+            margin-left: 10px;
+        } 
+    }
+}
+
+/** ANIMACIÓN ITEMS EN MÓVIL **/
+@keyframes fadeIn{
+    0% {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(0%);
+    }
+}
+
+
+.header{
+    width: 100%;
+    padding: 1em 5%;
+
+    position: fixed;
+    top: 0;
+    background: #ffffff;
+    z-index: 99;
+
+    @include flexbox(flex, row, wrap, space-between, center);
+    border-bottom: 1px solid $color-negro-text;
+
+    &_img{
+        max-width: 120px;
+        background-color: tomato;
+    }
+    &_ul {
+        @include flexbox(flex, row, nowrap, center, center);
+        list-style: none;
+
+        @include movil(){
+            flex-direction: column;
+        }
+    }
+    &_li {
+        margin: 0 1rem;
+        & a{
+            opacity: 1;
+            transition: all .8s ease;
+            position: relative;
+
+            /** Preparo el subrayado del hover de los enlaces **/
+            &:before{
+                content: " ";
+                position: absolute;
+                z-index: -1;
+                left: 0;
+                right: 100%;
+                bottom: 0;
+                background: $color-naranja-text;
+                height: 2px;
+                -webkit-transition-property: right;
+                transition-property: right;
+                -webkit-transition-duration: 0.3s;
+                transition-duration: 0.3s;
+                -webkit-transition-timing-function: ease-out;
+                transition-timing-function: ease-out;
+            }
+
+            &:hover{
+                opacity: .5;
+
+                &:before {
+                    right: 0;
+                    text-decoration: none !important;
+                }
+            }
+        }
+        @include movil(){
+            margin: 1rem 0;
+        }
+
+    }
+    &_rrss{
+        @include flexbox(flex, row, nowrap, flex-end, center);
+
+        &_img {
+            width: 20px;
+            height: 20px ;
+            margin: 0 .8em;
+        }
+
+        @include movil(){
+            display: none;
+            width: 100%;
+            justify-content: center;
+            margin: 1rem 0;
+
+            &.active{
+                display: flex;
+            }
+        }
+    }
+    &_button{
+        /** Para simular un link **/
+        cursor: pointer;
+
+        background: $color-negro-text;
+        display: none;
+        height: 2px;
+        position: relative;
+        width: 24px;
+        @include movil(){
+            display: block;
+        }
+
+        /** Creo las 3 barritas **/
+        &::before{
+            background: $color-negro-text;
+            content: '';
+            display: block;
+            height: 100%;
+            position: absolute;
+            transition: all .2s ease-out;
+            width: 100%;
+            top: 5px;
+        }
+        &::after{
+            @extend ::before;
+            top: -5px;
+        }
+        
+        /** cuando se añada la clasa active, transformo las tres barritas en una X **/
+        &.active{
+            background: transparent;
+
+            &::before{
+                transform: rotate(-45deg);
+                top:0;
+            }
+            &::after{
+                transform: rotate(45deg);
+                top:0;
+            }
+        }
+    }
+
+    @include movil(){
+        &>a{
+            width: 50%;
+        }
+        &_nav{
+            width: 100%;
+            opacity: 0;
+            height: 0vh;
+
+            overflow: hidden;
+            transition: all .5s ease;
+
+            &.active{
+                opacity: 1;
+                height: 30vh;
+
+                /** Activo la animación para que los items vayan apareciendo en escalera **/
+                & .header_li{
+                    opacity: 0;
+                    animation: fadeIn 1s forwards;
+
+                    &:nth-child(1){ animation-delay: 0ms; }
+                    &:nth-child(2){ animation-delay: 100ms; }
+                    &:nth-child(3){ animation-delay: 200ms; }
+                    &:nth-child(4){ animation-delay: 300ms; }
+                }
+            }
+        }
+    }
+}
